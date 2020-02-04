@@ -1,4 +1,4 @@
-const chunkArray = require('../chunk')
+const chunkArray = require('../jest_test/chunk')
 
 test('chunkArray function exists', () => {
     expect(chunkArray).toBeDefined()

@@ -1,4 +1,4 @@
-const reverseString = require('../reversestring')
+const reverseString = require('../jest_test/reversestring')
 
 test('reverseString function exists', () => {
     expect(reverseString).toBeDefined()

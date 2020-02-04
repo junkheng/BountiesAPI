@@ -1,4 +1,4 @@
-const isAnagram = require('../anagram')
+const isAnagram = require('../jest_test/anagram')
 
 test('isAnagram function exists', () => {
     expect(typeof isAnagram).toStrictEqual('function')

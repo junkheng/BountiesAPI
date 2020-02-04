@@ -1,4 +1,4 @@
-const functions = require('../functions')
+const functions = require('../jest_test/functions')
 
 // beforeEach(() => initDatabase())
 // afterEach(() => closeDatabase())
