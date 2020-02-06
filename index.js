@@ -88,7 +88,7 @@ app.put('/todo/:id', async (req, res) => {
 
 app.delete('/todo/:id', async (req, res) => {
     try {
-        let result = await TodoModel.deleteOne({ _id: req.params.id }).exec()
+        let result = await TodoModel.deleteOne({ id: req.params._id }).exec()
         console.log(`deleting item...`)
         res.send(result)
     } catch (error) {
