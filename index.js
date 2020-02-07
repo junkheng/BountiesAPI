@@ -23,30 +23,20 @@ db.once('open', function() {
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+// app.use(cors())
 
-app.listen(port, () => console.log(`Listening on port ${port}`))
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    optionsSuccessStatus: 200
+}
 
 const TodoModel = mongoose.model('todo', {
     task: String,
-    completed: Boolean
+    completed: { type: Boolean, default: false }
 })
 
 
-// app.post('/todo', (req, res) => {
-//     try {
-//         request('http://localhost:3001/todo', async (error, response, body) => {
-//             let todo = new TodoModel(req.body)
-//             let result = await todo.save()
-//             console.log('saving task from external......')
-//             res.send(result)
-//         })
-//     } catch (error) {
-//         res.status(500).send(error)
-//     }
-// })
-
-app.post('/todo', async (req, res) => {
+app.post('/todo', cors(corsOptions), async (req, res) => {
     try {
         let todo = new TodoModel(req.body)
         let result = await todo.save()
@@ -86,7 +76,7 @@ app.put('/todo/:id', async (req, res) => {
     }
 })
 
-app.delete('/todo/:id', async (req, res) => {
+app.delete('/todo/delete/:id', async (req, res) => {
     try {
         let result = await TodoModel.deleteOne({ id: req.params._id }).exec()
         console.log(`deleting item...`)
@@ -95,3 +85,5 @@ app.delete('/todo/:id', async (req, res) => {
         res.status(500).send(error)
     }
 })
+
+app.listen(port, () => console.log(`Listening on port ${port}`))
