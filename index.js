@@ -38,6 +38,7 @@ const TodoModel = mongoose.model('todo', {
 
 app.post('/todo', cors(corsOptions), async (req, res) => {
     try {
+        console.log(req.body)
         let todo = new TodoModel(req.body)
         let result = await todo.save()
         console.log(`saving task: ${result.task}`)
@@ -66,10 +67,14 @@ app.get('/todo/:id', async (req, res) => {
 })
 
 app.put('/todo/:id', async (req, res) => {
+    // console.log(req.params)
+
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
+        console.log(req.body)
         todo.set(req.body)
         let result = await todo.save()
+        console.log(result)
         res.send(result)
     } catch (error) {
         res.status(500).send(error)
@@ -79,7 +84,7 @@ app.put('/todo/:id', async (req, res) => {
 app.delete('/todo/delete/:id', async (req, res) => {
     try {
         let result = await TodoModel.deleteOne({ _id: req.params.id }).exec()
-        console.log(`deleting item...`)
+        console.log(`deleting item...${req.params.id}`)
         res.send(result)
     } catch (error) {
         res.status(500).send(error)
