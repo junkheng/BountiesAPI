@@ -26,13 +26,15 @@ class HandlerGenerator {
                     token: token
                 })
             } else {
-                res.send(403).json({
+                console.log('incorrect user or pass')
+                res.sendStatus(403).json({
                     success: false,
                     message: 'Incorrect username or password'
                 })
             }
         } else {
-            res.send(400).json({
+            console.log('auth failed')
+            res.sendStatus(400).json({
                 success: false,
                 message: 'Authentication failed! Please check the request'
             })
@@ -75,6 +77,7 @@ class HandlerGenerator {
     app.use(bodyParser.json())
     app.post('/login', handlers.login)
     app.get('/', middleware.checkToken, handlers.index)
+    
     app.listen(port, () => console.log(`Server is listening on port: ${port}`))
     app.post('/todo', async (req, res) => {
         try {
@@ -107,14 +110,13 @@ class HandlerGenerator {
     })
     
     app.put('/todo/:id', async (req, res) => {
-        // console.log(req.params)
-    
+        // console.log(req.body)
         try {
             let todo = await TodoModel.findById(req.params.id).exec()
-            console.log(req.body)
+            // console.log(req.body)
             todo.set(req.body)
             let result = await todo.save()
-            console.log(result)
+            console.log(`updating item to...${result}`)
             res.send(result)
         } catch (error) {
             res.status(500).send(error)
