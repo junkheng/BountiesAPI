@@ -1,11 +1,7 @@
 // Express base config
 const express = require('express')
 const app = express()
-const port = 3000
 const router = express.Router()
-
-const request = require('request')
-const cors = require('cors')
 
 // To parse json
 const bodyParser = require('body-parser')
@@ -18,25 +14,17 @@ const db = mongoose.connection
 // DB check
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log('db connected!')
+console.log('db connected!')
 });
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(cors())
-
-const corsOptions = {
-    origin: 'http://localhost:3001',
-    optionsSuccessStatus: 200
-}
 
 const TodoModel = mongoose.model('todo', {
     task: String,
     completed: { type: Boolean, default: false }
 })
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
-
-app.post('/todo', cors(corsOptions), async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         console.log(req.body)
         let todo = new TodoModel(req.body)
@@ -48,7 +36,7 @@ app.post('/todo', cors(corsOptions), async (req, res) => {
     }
 })
 
-app.get('/todo', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let result = await TodoModel.find().exec()
         res.send(result)
@@ -57,7 +45,7 @@ app.get('/todo', async (req, res) => {
     }
 })
 
-app.get('/todo/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
         res.send(todo)
@@ -66,22 +54,21 @@ app.get('/todo/:id', async (req, res) => {
     }
 })
 
-app.put('/todo/:id', async (req, res) => {
-    // console.log(req.params)
-
+router.put('/:id', async (req, res) => {
+    // console.log(req.body)
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
-        console.log(req.body)
+        // console.log(req.body)
         todo.set(req.body)
         let result = await todo.save()
-        console.log(result)
+        console.log(`updating item to...${result}`)
         res.send(result)
     } catch (error) {
         res.status(500).send(error)
     }
 })
 
-app.delete('/todo/delete/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         let result = await TodoModel.deleteOne({ _id: req.params.id }).exec()
         console.log(`deleting item...${req.params.id}`)
@@ -91,4 +78,4 @@ app.delete('/todo/delete/:id', async (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Listening on port ${port}`))
+module.exports = router
