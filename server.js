@@ -6,7 +6,6 @@ const userRouter = require('./routes/user/userRoutes')
 // To parse json
 const bodyParser = require('body-parser')
 
-// let handlers = new HandlerGenerator()
 const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: true }))

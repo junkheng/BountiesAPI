@@ -20,7 +20,8 @@ console.log('db connected!')
 
 const TodoModel = mongoose.model('todo', {
     task: String,
-    completed: { type: Boolean, default: false }
+    completed: { type: Boolean, default: false },
+    deleted: { type: Boolean, default: false }
 })
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -80,3 +81,8 @@ router.delete('/delete/:id', checkAuth, async (req, res) => {
 })
 
 module.exports = router
+
+// db status - updated/deleted/completed
+// sorting..
+// if completed item, disable updating
+// delete - don't delete from db, hide from client
