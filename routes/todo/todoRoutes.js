@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
+const checkAuth = require('../../middleware')
 
 // To parse json
 const bodyParser = require('body-parser')
@@ -24,7 +25,7 @@ const TodoModel = mongoose.model('todo', {
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-router.post('/', async (req, res) => {
+router.post('/', checkAuth, async (req, res) => {
     try {
         console.log(req.body)
         let todo = new TodoModel(req.body)
@@ -45,7 +46,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', checkAuth, async (req, res) => {
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
         res.send(todo)
@@ -54,7 +55,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkAuth, async (req, res) => {
     // console.log(req.body)
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
@@ -68,7 +69,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', checkAuth, async (req, res) => {
     try {
         let result = await TodoModel.deleteOne({ _id: req.params.id }).exec()
         console.log(`deleting item...${req.params.id}`)
