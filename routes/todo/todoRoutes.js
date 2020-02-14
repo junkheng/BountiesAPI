@@ -48,6 +48,15 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/archive', async (req, res) => {
+    try {
+        let result = await TodoModel.find({ deleted: true }).exec()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 router.get('/:id', checkAuth, async (req, res) => {
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
