@@ -21,6 +21,7 @@ console.log('db connected!')
 const TodoModel = mongoose.model('todo', {
     task: String,
     time: Date,
+    updated_at: Date,
     completed: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false }
 })
@@ -93,6 +94,18 @@ router.put('/delete/:id', checkAuth, async (req, res) => {
     }
 })
 
+router.put('/completed/:id', checkAuth, async (req, res) => {
+    try {
+        let todo = await TodoModel.findById(req.params.id).exec()
+        console.log(req.body.completed)
+        todo.set(req.body.completed)
+        let result = await todo.save()
+        console.log(`setting completed status to...${result}`)
+        res.send(result)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
 
 // actual deleting
 // router.delete('/delete/:id', checkAuth, async (req, res) => {
@@ -112,3 +125,8 @@ module.exports = router
 // if completed item, disable updating
 // delete - don't delete from db, hide from client || follow edit, set req.body.deleted to true
 // show only non-deleted items ***
+// deleted items timestamp.. updated at..
+// report ***
+
+
+// api done for 'completed' status update.. need to add checkbox/strikethrough for Client

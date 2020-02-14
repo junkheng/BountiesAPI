@@ -90,6 +90,8 @@ router.post('/login', (req, res, next) => {
         })
 })
 
+
+// for testing
 router.delete('/:userID', (req, res, next) => {
     User.deleteOne({ _id: req.params.userID })
         .exec()
