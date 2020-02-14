@@ -20,6 +20,7 @@ console.log('db connected!')
 
 const TodoModel = mongoose.model('todo', {
     task: String,
+    time: Date,
     completed: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false }
 })
@@ -40,7 +41,7 @@ router.post('/', checkAuth, async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        let result = await TodoModel.find().exec()
+        let result = await TodoModel.find({deleted: false}).exec() // only find non-deleted items at the start
         res.send(result)
     } catch (error) {
         res.status(500).send(error)
@@ -60,7 +61,7 @@ router.put('/:id', checkAuth, async (req, res) => {
     // console.log(req.body)
     try {
         let todo = await TodoModel.findById(req.params.id).exec()
-        // console.log(req.body)
+        console.log(req.body)
         todo.set(req.body)
         let result = await todo.save()
         console.log(`updating item to...${result}`)
@@ -83,6 +84,6 @@ router.delete('/delete/:id', checkAuth, async (req, res) => {
 module.exports = router
 
 // db status - updated/deleted/completed
-// sorting..
+// sorting.. Date.now() to timestamp
 // if completed item, disable updating
-// delete - don't delete from db, hide from client
+// delete - don't delete from db, hide from client || follow edit, set req.body.deleted to true
