@@ -120,13 +120,15 @@ router.put('/completed/:id', checkAuth, async (req, res) => {
 
 module.exports = router
 
-// db status - updated/deleted/completed
 // sorting.. Date.now() to timestamp
-// if completed item, disable updating
-// delete - don't delete from db, hide from client || follow edit, set req.body.deleted to true
+// cleanup UI
+
+
+// db status - updated/deleted/completed ***
+// delete - don't delete from db, hide from client || follow edit, set req.body.deleted to true ***
 // show only non-deleted items ***
-// deleted items timestamp.. updated at..
+// deleted items timestamp.. updated at.. ***
+// if completed item, disable updating ***
+// api done for 'completed' status update.. need to add checkbox/strikethrough for Client ***
+// todo <--> completed swap buttons ***
 // report ***
-
-
-// api done for 'completed' status update.. need to add checkbox/strikethrough for Client
