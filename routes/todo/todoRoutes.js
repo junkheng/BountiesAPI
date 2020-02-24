@@ -12,6 +12,7 @@ const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true})
 const db = mongoose.connection
 
+
 // DB check
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -121,8 +122,6 @@ router.put('/completed/:id', checkAuth, async (req, res) => {
 module.exports = router
 
 // sorting.. Date.now() to timestamp
-// cleanup UI
-
 
 // db status - updated/deleted/completed ***
 // delete - don't delete from db, hide from client || follow edit, set req.body.deleted to true ***
@@ -131,4 +130,5 @@ module.exports = router
 // if completed item, disable updating ***
 // api done for 'completed' status update.. need to add checkbox/strikethrough for Client ***
 // todo <--> completed swap buttons ***
+// cleanup UI ***
 // report ***
