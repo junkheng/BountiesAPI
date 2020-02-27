@@ -43,7 +43,7 @@ router.post('/', checkAuth, async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        let result = await TodoModel.find({deleted: false}).exec() // only find non-deleted items at the start
+        let result = await TodoModel.find().exec() // only find non-deleted items at the start
         res.send(result)
     } catch (error) {
         res.status(500).send(error)
